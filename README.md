@@ -1,3 +1,2 @@
-# Project 2
+# online messaging service
 
-Web Programming with Python and JavaScript
