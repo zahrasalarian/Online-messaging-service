@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
   document.querySelector('#submit').onclick = () => {
     let username = document.querySelector('#inlineFormInputGroupUsername2').value;
     document.querySelector('#username').innerHTML = username;
-    localStorage.setItem('username',username)
+    localStorage.setItem('username',username);
 
   }
 });

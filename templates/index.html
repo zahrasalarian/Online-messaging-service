@@ -9,8 +9,6 @@
   </head>
   <body>
 
-<script src="storage.js"></script>
-
     <form class="form-inline">
       <!-- <label class="sr-only" for="inlineFormInputName2">Name</label>
       <input type="text" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="Jane Doe">  -->
@@ -25,5 +23,70 @@
       <button type="submit" id="submit" class="btn btn-primary mb-2">Submit</button>
     </form>
     <h1 id="username"></h1>
+
+    <!-- the script that stores Username -->
+    <script type="text/javascript">
+
+    if(!localStorage.getItem('username'))
+        localStorage.setItem('username','');
+    document.addEventListener('DOMContentLoaded', ()=> {
+      document.querySelector('#username').innerHTML = localStorage.getItem('username');
+
+      document.querySelector('#submit').onclick = () => {
+        let username = document.querySelector('#inlineFormInputGroupUsername2').value;
+        document.querySelector('#username').innerHTML = username;
+        localStorage.setItem('username',username);
+
+      }
+    });
+
+    </script>
+    <style media="screen">
+      #list {
+          height: 200px;
+          width: 15%;
+          background-color: powderblue;
+         }
+    </style>
+    <!-- button to create a new channel -->
+    <style media="screen">
+      #create_list{
+        width: 15%;
+      }
+    </style>
+
+    <button type="button" id="create_list" class="list-group-item list-group-item-action">Create new channel</button>
+    <!-- list of the channels -->
+    <div class="list-group" id="list">
+      <ul id="channels">
+      </ul>
+
+      <form class="form-inline" id='new_channel'>
+        <label class="sr-only" for="inlineFormInputGroupUsername2">Username</label>
+        <div class="input-group mb-2 mr-sm-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text">@</div>
+          </div>
+          <input type="text" class="form-control" id="new_channels_name" placeholder="Username">
+        </div>
+      </form>
+  </div>
+  <!-- script of channels -->
+  <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () =>{
+        document.querySelector('#create_list').onclick = () =>{
+
+          const li = document.createElement('li');
+          li.innerHTML = document.querySelector('#new_channels_name').value;
+
+          document.querySelector('#channels').append(li);
+
+          document.querySelector('#new_channels_name').value = '';
+
+          return false;
+        }
+      })
+  </script>
+
   </body>
 </html>
