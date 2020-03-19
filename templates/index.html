@@ -42,25 +42,22 @@
 
     </script>
     <style media="screen">
-      #list {
+      #list_of_channels {
           height: 200px;
           width: 15%;
-          background-color: powderblue;
+          background-color: white;
          }
     </style>
     <!-- button to create a new channel -->
-    <style media="screen">
+    <!-- <style media="screen">
       #create_list{
         width: 15%;
       }
-    </style>
-
-    <button type="button" id="create_list" class="list-group-item list-group-item-action">Create new channel</button>
+    </style> -->
+  <div id='list_of_channels'>
+    <button type="button" id="create_channel" class="list-group-item list-group-item-action">Create new channel</button>
     <!-- list of the channels -->
     <div class="list-group" id="list">
-      <ul id="channels">
-      </ul>
-
       <form class="form-inline" id='new_channel'>
         <label class="sr-only" for="inlineFormInputGroupUsername2">Username</label>
         <div class="input-group mb-2 mr-sm-2">
@@ -70,16 +67,28 @@
           <input type="text" class="form-control" id="new_channels_name" placeholder="Username">
         </div>
       </form>
+    </div>
+    <ul id="channels">
+    </ul>
   </div>
   <!-- script of channels -->
   <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', () =>{
-        document.querySelector('#create_list').onclick = () =>{
+        document.querySelector('#create_channel').disabled = true;
 
-          const li = document.createElement('li');
-          li.innerHTML = document.querySelector('#new_channels_name').value;
+        document.querySelector('#new_channels_name').onkeyup = () =>{
+          if (document.querySelector('#new_channels_name').value.length >0)
+              document.querySelector('#create_channel').disabled = false;
+          else
+              document.querySelector('#create_channel').disabled = true;
+        };
+        document.querySelector('#create_channel').onclick = () =>{
 
-          document.querySelector('#channels').append(li);
+          const button = document.createElement('button');
+          button.className = 'list-group-item list-group-item-action'
+          button.innerHTML = document.querySelector('#new_channels_name').value;
+
+          document.querySelector('#channels').append(button);
 
           document.querySelector('#new_channels_name').value = '';
 
