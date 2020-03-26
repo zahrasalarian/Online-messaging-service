@@ -74,7 +74,18 @@
   <!-- script of channels -->
   <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', () =>{
-        // checks if we already have a stored list or not
+        // checks if we already have a stored channels or not
+        var pre_channels = {{data|safe}};
+        for(const [key, value] of Object.entries(pre_channels)){
+
+          console.log(key, value);
+
+          const button = document.createElement('button');
+          button.className = 'list-group-item list-group-item-action';
+          button.innerHTML = key;
+
+          document.querySelector('#channels_list').append(button);
+        }
 
         document.querySelector('#create_channel').disabled = true;
 
