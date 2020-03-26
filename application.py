@@ -20,7 +20,7 @@ def messanger():
     channel_name = request.form['new_channels_name']
     print('ah'+channel_name)
     if (channel_name not in channels):
-        channels[channel_name] = []
+        channels[channel_name] = ["bale"]
         return jsonify({"success":True ,"channel":channel_name})
     else:
         return jsonify({"success":False})

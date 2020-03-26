@@ -63,7 +63,7 @@
           <div class="input-group-prepend">
             <div class="input-group-text">@</div>
           </div>
-          <button type="button" id="create_channel" class="list-group-item list-group-item-action">Create new channel</button>
+          <button type="button" name="create_channel" id="create_channel">Create new channel</button>
           <input type="text" class="form-control" name="new_channels_name" id="new_channels_name" placeholder="Username">
         </div>
       </form>
@@ -78,11 +78,14 @@
         var pre_channels = {{data|safe}};
         for(const [key, value] of Object.entries(pre_channels)){
 
-          console.log(key, value);
+          // console.log(key, value);
 
           const button = document.createElement('button');
           button.className = 'list-group-item list-group-item-action';
+          button.name = key;
           button.innerHTML = key;
+
+          console.log(button.name);
 
           document.querySelector('#channels_list').append(button);
         }
@@ -107,6 +110,7 @@
             if (data.success){
               const button = document.createElement('button');
               button.className = 'list-group-item list-group-item-action';
+              button.name = data.channel;
               button.innerHTML = data.channel;
 
               document.querySelector('#channels_list').append(button);
@@ -122,8 +126,22 @@
           return false;
 
         }
+        //access to channels content
+        document.querySelectorAll('.list-group-item.list-group-item-action').forEach(function(button){
+          button.onclick = function(){
+            // console.log("eeee");
+            if (button.name !="create_channel"){
+            document.querySelector("#yoho").innerHTML = pre_channels[button.name][0];
+            console.log(button.name);
+          }
+          };
+        });
+
+
+
       });
 
   </script>
+  <h6 id="yoho"></h6>
   </body>
 </html>
