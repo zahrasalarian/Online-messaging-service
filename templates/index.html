@@ -55,7 +55,6 @@
       }
     </style> -->
   <div id='list_of_channels'>
-    <button type="button" id="create_channel" class="list-group-item list-group-item-action">Create new channel</button>
     <!-- list of the channels -->
     <div class="list-group" id="list">
       <form class="form-inline" id='new_channel'>
@@ -64,16 +63,19 @@
           <div class="input-group-prepend">
             <div class="input-group-text">@</div>
           </div>
-          <input type="text" class="form-control" id="new_channels_name" placeholder="Username">
+          <button type="button" id="create_channel" class="list-group-item list-group-item-action">Create new channel</button>
+          <input type="text" class="form-control" name="new_channels_name" id="new_channels_name" placeholder="Username">
         </div>
       </form>
     </div>
-    <ul id="channels">
+    <ul id="channels_list">
     </ul>
   </div>
   <!-- script of channels -->
   <script type="text/javascript">
       document.addEventListener('DOMContentLoaded', () =>{
+        // checks if we already have a stored list or not
+
         document.querySelector('#create_channel').disabled = true;
 
         document.querySelector('#new_channels_name').onkeyup = () =>{
@@ -84,18 +86,33 @@
         };
         document.querySelector('#create_channel').onclick = () =>{
 
-          const button = document.createElement('button');
-          button.className = 'list-group-item list-group-item-action'
-          button.innerHTML = document.querySelector('#new_channels_name').value;
+          const request = new XMLHttpRequest();
+          const channel_name = document.querySelector('#new_channels_name').value;
+          request.open('POST','/messanger');
 
-          document.querySelector('#channels').append(button);
+          request.onload = () => {
+            const data = JSON.parse(request.responseText);
 
-          document.querySelector('#new_channels_name').value = '';
+            if (data.success){
+              const button = document.createElement('button');
+              button.className = 'list-group-item list-group-item-action';
+              button.innerHTML = data.channel;
 
+              document.querySelector('#channels_list').append(button);
+              document.querySelector('#new_channels_name').value = '';
+
+              // return false;
+
+            }
+          }
+          const data = new FormData();
+          data.append('new_channels_name',channel_name);
+          request.send(data);
           return false;
-        }
-      })
-  </script>
 
+        }
+      });
+
+  </script>
   </body>
 </html>
