@@ -24,3 +24,16 @@ def messanger():
         return jsonify({"success":True ,"channel":channel_name})
     else:
         return jsonify({"success":False})
+@socketio.on("send message")
+def message(data):
+    message = data["message"]
+    user = data["user"]
+    channel_name = data["channel_name"]
+    new_message = []
+    new_message.append(user)
+    new_message.append(message)
+    channels[channel_name].append(new_message)
+    emit("announce message",{"message":new_message, "channel_name":channel_name},broadcast=True)
+
+if __name__ == '__main__':
+    socketio.run(app)

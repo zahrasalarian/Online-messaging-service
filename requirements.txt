@@ -1,2 +1,6 @@
 Flask
 Flask-SocketIO
+eventlet
+node
+npm
+npm install socket.io

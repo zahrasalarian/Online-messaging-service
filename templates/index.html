@@ -70,11 +70,46 @@
     </div>
     <ul id="channels_list">
     </ul>
+    <style media="screen">
+      #messages{
+        background-color: rgb(129,249,195);
+        width: 820px;
+        height: 550px;
+        left: 400px;
+        top: 0px;
+        position: absolute;
+      }
+      #send-message{
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 100px;
+        border: 3px solid #73AD21;
+      }
+      #message{
+        position: fixed;
+        bottom: 0;
+        right: 80;
+        width: 300px;
+        border: 3px solid #73AD21;
+      }
+    </style>
+  </div>
+  <div id="messages">
+    <input type="text" id="message" class="form-control" placeholder="Type your message here">
+    <button type="submit" id="send-message" class="btn btn-primary">Send</button>
+    <ul id="messages_list">
+    </ul>
+
   </div>
   <!-- script of channels -->
-  <script type="text/javascript">
+  <script type="text/javascript" src="/socket.io/socket.io.js">
+      //checks the last channel we were in
+      if(!localStorage.getItem('curr_channel'))
+          localStorage.setItem('curr_channel','');
       document.addEventListener('DOMContentLoaded', () =>{
-        // checks if we already have a stored channels or not
+
+        // checks if we already have a stored channel or not
         var pre_channels = {{data|safe}};
         for(const [key, value] of Object.entries(pre_channels)){
 
@@ -85,6 +120,7 @@
           button.name = key;
           button.innerHTML = key;
 
+          console.log("ok then")
           console.log(button.name);
 
           document.querySelector('#channels_list').append(button);
@@ -131,14 +167,35 @@
           button.onclick = function(){
             // console.log("eeee");
             if (button.name !="create_channel"){
-            document.querySelector("#yoho").innerHTML = pre_channels[button.name][0];
+            document.querySelector("#messages_list").innerHTML = ""
+            // document.querySelector("#yoho").innerHTML = pre_channels[button.name][0];
+            for (var i=0; i<pre_channels[button.name].length;i++){
+               const li = document.createElement("li");
+               li.className = "list-group-item"
+               li.innerHTML = pre_channels[button.name][i]
+               document.querySelector('#messages_list').append(li);
+
+               localStorage.setItem('curr_channel',button.name);
+            }
             console.log(button.name);
-          }
+            }
           };
         });
-
-
-
+        //
+        //sending messange
+        var socket = io.connect(location.protocol +'//'+document.domain+ ':' + location.port);
+        socket.on('connect', () => {
+            document.querySelector("#send-message").onclick = () =>{
+               const message = document.querySelector("#message").value()
+               socket.emit("sent message",{"message": message, "user": localStorage.getItem('username') ,"channel_name":localStorage.getItem('curr_channel') });
+            };
+        });
+        socket.on('announce message', data => {
+          const li = document.createElement('li')
+          li.className = "list-group-item"
+          li.innerHTML = data["message"][1]
+          document.querySelector('#messages_list').append(li);
+        });
       });
 
   </script>
