@@ -26,6 +26,7 @@ def messanger():
         return jsonify({"success":False})
 @socketio.on("send message")
 def message(data):
+    print("gereftam")
     message = data["message"]
     user = data["user"]
     channel_name = data["channel_name"]

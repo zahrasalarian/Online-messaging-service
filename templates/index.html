@@ -103,7 +103,9 @@
 
   </div>
   <!-- script of channels -->
-  <script type="text/javascript" src="/socket.io/socket.io.js">
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+  <script type="text/javascript" >
       //checks the last channel we were in
       if(!localStorage.getItem('curr_channel'))
           localStorage.setItem('curr_channel','');
@@ -186,8 +188,10 @@
         var socket = io.connect(location.protocol +'//'+document.domain+ ':' + location.port);
         socket.on('connect', () => {
             document.querySelector("#send-message").onclick = () =>{
-               const message = document.querySelector("#message").value()
-               socket.emit("sent message",{"message": message, "user": localStorage.getItem('username') ,"channel_name":localStorage.getItem('curr_channel') });
+               const message = document.querySelector("#message").value;
+               console.log(message);
+               console.log(localStorage.getItem('curr_channel'));
+               socket.emit('send message',{"message": message, "user": localStorage.getItem('username') ,"channel_name":localStorage.getItem('curr_channel') });
             };
         });
         socket.on('announce message', data => {
