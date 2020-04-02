@@ -34,7 +34,13 @@ def message(data):
     new_message.append(user)
     new_message.append(message)
     channels[channel_name].append(new_message)
-    emit("announce message",{"message":new_message, "channel_name":channel_name},broadcast=True)
+    emit("announce message",{"message":new_message, "channel_name":channel_name,"new_channel_message_list": channels[channel_name]},broadcast=True)
+
+@socketio.on("create channel")
+def create_channel(data):
+    print("chanelo bede agha")
+    channel_name = data["channel_name"]
+    emit("announce channel",{"channel_name":channel_name},broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app)
